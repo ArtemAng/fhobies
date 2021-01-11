@@ -1,0 +1,7 @@
+{
+    "port": 1337,
+    "mongoUri": "mongodb+srv://Artem:aaa123@cluster0.qj5z6.mongodb.net/fhobies?retryWrites=true&w=majority",
+    
+    "jwtSecret": "itra",
+    "baseUrl": "http://localhost:8881"
+}
