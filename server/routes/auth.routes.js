@@ -20,6 +20,7 @@ router.post(
             if (!errors.isEmpty())
                 return res.status(400).json({ errors: errors.array(), message: 'Wrong data.' });
             const { email, password, name } = req.body;
+            console.log(name, 'signup');
             const candidate = await User.findOne({ email });
             if (candidate !== null)
                 res.status(400).json({ message: 'This user already exists.' });
@@ -27,7 +28,7 @@ router.post(
             const hashedPassword = await bcrypt.hash(password, 12);
             // const date = new Date().toString().split(' ');
             // добавляем нового пользователя
-            const user = new User({ email, password: hashedPassword });
+            const user = new User({ email, password: hashedPassword, name: name });
             user.save();
             console.log('hello', candidate == false);
 
@@ -66,7 +67,7 @@ router.post(
                 return res.status(400).json({ errors: errors.array(), message: 'Wrong data.' })
             }
             const { email, password } = req.body;
-            
+
             const user = await User.findOne({ email });
             if (!user) {
                 res.status(400).json({ message: 'This user does not exist.' });
@@ -82,6 +83,6 @@ router.post(
             res.status(500).json({ message: 'Something wrong, try again.' })
         }
     }
-    );
+);
 
 module.exports = router;

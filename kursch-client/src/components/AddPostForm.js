@@ -7,56 +7,88 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import { useContext, useState } from 'react';
 import { ItemContext } from '../context/ItemContext';
+import { useHttp } from '../hooks/http.hook';
+import { useMessage } from '../hooks/message.hook';
+import FormControll from '../components/FormControll';
+import { CollectionsContext } from '../context/CollectionContext';
 
 const useStyles = makeStyles((theme) => ({
     form: {
         padding: theme.spacing(2),
-        backgroundColor: theme.palette.primary.main
+        backgroundColor: theme.palette.primary.main,
+        '& .MuiInputBase-input': {
+            color: 'white',
+            borderColor: 'white',
+        },
+        '& label.Mui-focused': {
+            color: 'white',
+        },
+        '& .MuiInput-underline:after': {
+            borderBottomColor: 'white',
+        },
+        '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+                borderColor: 'white',
+            },
+            '&:hover fieldset': {
+                borderColor: 'white',
+            },
+            '&.Mui-focused fieldset': {
+                borderColor: 'white',
+            },
+        },
     },
     inputs: {
         marginBottom: 20,
-        borderColor: theme.palette.primary.contrastText,
+
     }
 
 }));
 
 const AddPostForm = () => {
     const classes = useStyles();
-    const item = useContext(ItemContext);
+    const { item, editItem } = useContext(ItemContext);
+    const { request, error, clearError } = useHttp();
+    const message = useMessage();
+    const { collections } = useContext(CollectionsContext);
+    const {userId} = JSON.parse(localStorage.getItem('userData'));
 
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
+    const titleChangeHandler = (e) => editItem(e.target);
+    const descriptionChangeHandler = (e) => editItem(e.target);
 
-    const titleChangeHandler = (e) => {
-        item.title = e.target.value
-        console.log(item, 'handle');
-        setTitle(e.target.value);
-    }
-    const descriptionChangeHandler = (e) => setDescription(e.target.value);
-
-    const submitHandler = () => {
-        console.log(item, 'handle');
+    const submitHandler = async () => {
+        try {
+            const data = await request('/api/posts/addPost', 'POST', { ...item, userId });
+            message(data.message)
+        } catch (e) { }
     }
     return (
         <Paper className={classes.form}>
             <TextField
                 label="Item name"
-                color='inherit'
+                color='secondary'
                 variant='filled'
                 className={classes.inputs}
                 onChange={titleChangeHandler}
+                name='title'
             />
+            <FormControll datas={collections} onChanged={(e)=> editItem(e)} />
             <TextField
                 label="Item description"
                 fullWidth
                 multiline
                 rows={6}
                 color='secondary'
+                name='description'
                 className={classes.inputs}
                 variant="outlined"
                 onChange={descriptionChangeHandler}
             />
-            <Button variant='outlined' color='secondary' >
+            <Button
+                variant='outlined'
+                color='secondary'
+                onClick={submitHandler}
+            >
                 Submit
             </Button>
         </Paper>

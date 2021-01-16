@@ -94,7 +94,7 @@ export default function SignInSide() {
               margin="normal"
               required
               fullWidth
-              name="nickname"
+              name="name"
               label="Your nickname"
               id="nickname"
               autoComplete="nickname"

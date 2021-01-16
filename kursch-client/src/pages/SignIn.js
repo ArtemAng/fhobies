@@ -74,7 +74,8 @@ export default function SignInSide() {
 
   const LoginHandle = async () => {
     try {
-      const data = await request('http://localhost:1337/api/auth/signin', 'POST', {...formData});
+      const data = await request('/api/auth/signin', 'POST', {...formData});
+      // const data = await request('http://localhost:1337/api/auth/signin', 'POST', {...formData});
       console.log('tut', auth);
       auth.login(data.token, data.id);
     } catch (e) {}

@@ -19,12 +19,10 @@ const useStyles = makeStyles({
 function App() {
   const {root} = useStyles();
   const { login, logout, userId, token } = useAuth();
-  console.log(token);
   const isAutentificated = !!token;
   const routes = useRoutes(isAutentificated);
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
       <AuthContext.Provider value={{ login, logout, userId, token, isAutentificated }}>
         <Router>
           <div className={root}>

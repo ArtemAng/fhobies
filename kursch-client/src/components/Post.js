@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const Post = () => {
+const Post = ({ nickName, description, title, like, likes }) => {
 
     const classes = useStyles();
     const [open, setOpen] = useState(false);
@@ -68,7 +68,7 @@ const Post = () => {
                         alt='userAvatar'
                         src={testImg} />
                     <Typography className={classes.nickName} gutterBottom variant="h6" component="h1">
-                        nickname
+                        {nickName}
                     </Typography>
                 </CardContent>
             </CardActionArea>
@@ -80,17 +80,13 @@ const Post = () => {
                 image={testImg} />
             <CardContent>
                 <Typography gutterBottom variant="h6" component="h3">
-                    Item name
-                    </Typography>
-                        Description Description Description Description
-                        Description Description Description Description
-                        Description Description Description Description
-                        Description Description Description Description
-                        Description Description Description Description...
-                </CardContent>
+                    {title}
+                </Typography>
+                {description}
+            </CardContent>
             <CardContent className={classes.postHeader}>
-                <Button variant='outlined' color='inherit'>
-                    <FavoriteBorderIcon /> 100
+                <Button onClick={like} variant='outlined' color='inherit'>
+                    <FavoriteBorderIcon /> {likes.length}
                 </Button>
                 <Button variant='outlined' color='inherit' onClick={handleOpen}>
                     <ChatBubbleOutlineIcon />
