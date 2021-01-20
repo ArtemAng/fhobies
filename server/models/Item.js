@@ -1,14 +1,13 @@
 const { Schema, model, Types } = require('mongoose');
 
 const schema = new Schema({
-    userName: { type: String, required: true },
-    collectionName: {type: String, required: true},
-    title: {type: String, required: true},
-    description: {type: String, required: true},
-    likes: {type: Array, required: true},
-    collectionId: { type: Types.ObjectId, ref: 'Collection', required: true },
     userId: { type: Types.ObjectId, ref: 'User', required: true },
-    comments: {type: Array}
+    tags: { type: String, required: true },
+    name: { type: String, required: true},
+    collectionId: {type: Types.ObjectId, required: true},
+    likes: {type: Array, required: true},
+    
+    // items: { type: Types.Array } //requiered
 });
 
 module.exports = model('CollectionItem', schema);

@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const Item = require('../models/Item');
+const Item = require('../models/Collection');
 const User = require('../models/User');
 const Comment = require('../models/Comment');
 
@@ -16,10 +16,10 @@ router.get('/', async (req, res) => {
 
 router.post('/addComment', async (req, res)=>{
     try {
-        const {itemIdx, userId, text} = req.body;
-
-        const items = await Item.find();
-        const itemId = items[itemIdx]._id;
+        const {itemId, userId, text} = req.body;
+        // const items = await Item.find();
+        
+        console.log('sdec');
         if (!text) {
             res.status(400).send({message:'Text is empty'});       
         }

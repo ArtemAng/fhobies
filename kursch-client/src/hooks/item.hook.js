@@ -13,7 +13,6 @@ export const useItem = () => {
     const editItem = ({ name, value }) => {
         setItem({ ...item, [name]: value })
     };
-
     const likeItem = ( arr ) => {
         setItem({ ...item, likes: arr.length });
     }

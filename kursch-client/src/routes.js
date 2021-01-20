@@ -8,6 +8,7 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Posts from './pages/Posts';
 import Profile from './pages/Profile';
+import CollectionItems from './pages/CollectionItems';
 
 // export const useRoutes = (isAutentificated) => {
 //     if (isAutentificated)
@@ -50,6 +51,7 @@ export const useRoutes = (isAutentificated) => {
     if (isAutentificated)
         return (
             <Switch>
+                <Route path='/collectionitems' component={CollectionItems} />
                 <Route path='/profile' component={Profile} />
                 <Route path='/SignIn' >
                     <Redirect to='/' />
@@ -63,6 +65,7 @@ export const useRoutes = (isAutentificated) => {
     if (!isAutentificated) {
         return (
             <Switch>
+                <Route path='/collectionitems' component={CollectionItems} />
                 <Route path='/profile' component={Profile} />
                 <Route path='/SignIn' >
                     <SignIn />

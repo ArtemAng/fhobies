@@ -11,14 +11,16 @@ import {
     Button
 } from '@material-ui/core';
 import testImg from '../images/as.jpg';
-import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import CommentsModal from './CommentsModal';
 import { CommentsContext } from '../context/CommentsContext';
 import { useEffect, useContext } from 'react';
 import ToolsMenu from '../components/ToolsMenu';
+import { Link } from 'react-router-dom';
+import { useHttp } from '../hooks/http.hook';
+import { useCallback } from 'react';
+import { ItemsContext } from '../context/ItemsContext';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -53,15 +55,12 @@ const useStyles = makeStyles(theme => ({
 const Post = ({ id, nickName, description, title, like, likes, postIdx }) => {
 
     const classes = useStyles();
-    const [open, setOpen] = useState(false);
     const [postComments, setPostComments] = useState([]);
     const { comments, setComments } = useContext(CommentsContext);
     const [toolsOpen, setToolsOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
-
-    const handleClick = (event) => {
-
-    };
+    const { request } = useHttp();
+    const {setCurrentId} = useContext(ItemsContext)
     useEffect(() => {
         console.log(comments, 'comments post');
         const filteredComments = comments.map(i => i._id === id ? i : null).filter(i => i !== null);
@@ -74,13 +73,8 @@ const Post = ({ id, nickName, description, title, like, likes, postIdx }) => {
         !toolsOpen ? setAnchorEl(e.currentTarget) : setAnchorEl(null);
     }
 
-    const handleOpen = () => {
-        setOpen(true);
-    };
+    
 
-    const handleClose = () => {
-        setOpen(false);
-    };
     return (
         <Card className={classes.root}>
             <CardActionArea>
@@ -95,11 +89,16 @@ const Post = ({ id, nickName, description, title, like, likes, postIdx }) => {
                 </CardContent>
             </CardActionArea>
 
-            <CardMedia
-                component='img'
-                alt='collection item photo'
-                height='300'
-                image={testImg} />
+            <CardActionArea onClick={()=>setCurrentId(id)}>
+                <Link to='/collectionItems'>
+                    <CardMedia
+                        component='img'
+                        alt='collection item photo'
+                        height='300'
+                        image={testImg} />
+                </Link>
+            </CardActionArea>
+
             <CardContent>
                 <Typography gutterBottom variant="h6" component="h3">
                     {title}
@@ -107,18 +106,11 @@ const Post = ({ id, nickName, description, title, like, likes, postIdx }) => {
                 {description}
             </CardContent>
             <CardContent className={classes.postHeader}>
-                <Button onClick={like} variant='outlined' color='inherit'>
-                    <FavoriteBorderIcon /> {likes.length}
-                </Button>
-                <Button variant='outlined' color='inherit' onClick={handleOpen}>
-                    <ChatBubbleOutlineIcon />
-                </Button>
                 <Button onClick={openTools} variant='outlined' color='inherit' className={classes.moreBtn}>
                     <MoreVertIcon />
                 </Button>
             </CardContent>
-            <CommentsModal id={id} postComments={postComments} postId={postIdx} open={open} handleClose={() => handleClose()} />
-            <ToolsMenu postIdx={postIdx} anchorEl={anchorEl} openTools={() => openTools()} isOpen={toolsOpen} />
+            <ToolsMenu postIdx={id} anchorEl={anchorEl} openTools={() => openTools()} isOpen={toolsOpen} />
         </Card>
     );
 }

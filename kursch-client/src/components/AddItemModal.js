@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import { Divider, Typography } from '@material-ui/core';
-import CommentSender from './CommentSender';
-import Comment from './Comment';
+import { TextField, Button } from '@material-ui/core';
 import { useHttp } from '../hooks/http.hook';
-import {CommentsContext} from '../context/CommentsContext';
+import { CommentsContext } from '../context/CommentsContext';
 
 function getModalStyle() {
     const top = 50;
@@ -30,25 +28,31 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SimpleModal({postId, open, handleClose }) {
+export default function SimpleModal({ id, postComments, postId, open, close, }) {
     const classes = useStyles();
     const [modalStyle] = useState(getModalStyle);
-    const { request } = useHttp();
-    const { comments, setComments, commetsClickedItem } = useContext(CommentsContext);
-
-
-    
-
+    const [formData, setFormData] = useState({});
+    const { request, message } = useHttp();
+    const {token, userId} = JSON.parse(localStorage.getItem('userData'));
+    const changeData = (e)=>setFormData({...formData, [e.target.name]: e.target.value});
+    const addItem = useCallback(async ()=>{
+        try {
+            const data = await request('/api/collectionitems/addItem', 'POST', {collectionId: id, ...formData, userId}, {Authorization: 'Bearer ' + token});
+            message(data.message);
+        } catch (e) {
+            
+        }
+    });
 
     const opened = open || false;
     const body = (
         <Fade in={opened}>
             <div style={modalStyle} className={classes.paper}>
-            {/* kostiiiiiiliiiii */}
-                {comments.filter(i=>i.itemId===commetsClickedItem).map((i, id) => <Comment key={id} text={i.text} />)} 
-                <Divider />
-                <CommentSender/>
-                <SimpleModal />
+                {/* kostiiiiiiliiiii */}
+                <TextField onChange={changeData} name='name' placeholder='Name' variant='outlined'></TextField>
+                <TextField onChange={changeData} name='tags' multiline rows={3} placeholder='Tags' variant='outlined'></TextField>
+                <Button onClick={addItem} variant='outlined'>Add</Button>
+
             </div>
         </Fade>
     );
@@ -57,7 +61,7 @@ export default function SimpleModal({postId, open, handleClose }) {
 
         <Modal
             open={open || false}
-            onClose={handleClose}
+            onClose={close}
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description"
             closeAfterTransition

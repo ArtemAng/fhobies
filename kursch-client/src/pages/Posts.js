@@ -5,6 +5,8 @@ import { usePosts } from '../hooks/posts.hook';
 import { useAuth } from '../hooks/auth.hook';
 import { CommentsContext } from '../context/CommentsContext';
 import { useComments } from '../hooks/comments.hook';
+import { useItems } from '../hooks/items.hook';
+import { ItemsContext } from '../context/ItemsContext';
 
 const Posts = () => {
 
@@ -21,6 +23,8 @@ const Posts = () => {
         } catch (error) { }
     }, [request])
 
+    
+
     useEffect(async () => {
         try {
             const data = await request('/api/comments', 'GET', null);
@@ -34,11 +38,11 @@ const Posts = () => {
         }
         catch (e) { }
     })
-
     return (
-        <CommentsContext.Provider value={{comments, setComments}}>
-            {posts.reverse().map((i, id) => <Post id={i._id} postIdx={id} likes={i.likes} like={() => like(id)} key={id} nickName={i.userName} title={i.title} description={i.description}></Post>)}
-        </CommentsContext.Provider>
+            <CommentsContext.Provider value={{ comments, setComments }}>
+                {posts.reverse().map((i, id) => <Post id={i._id} postIdx={id} likes={i.likes} like={() => like(id)} key={id} nickName={i.userName} title={i.title} description={i.description}></Post>)}
+            </CommentsContext.Provider>
+
     );
 }
 export default Posts;

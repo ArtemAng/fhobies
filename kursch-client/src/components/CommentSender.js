@@ -1,10 +1,11 @@
 import { Avatar, Button, Input } from '@material-ui/core';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useContext } from 'react';
 import testImage from '../images/tlou2.jpg';
 import { makeStyles } from '@material-ui/core/styles';
 import { TextField } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import { useHttp } from '../hooks/http.hook';
+import { CommentsContext } from '../context/CommentsContext';
 
 const useStyles = makeStyles({
     root: {
@@ -20,15 +21,14 @@ const useStyles = makeStyles({
     }
 })
 
-const CommentSender = ({ postId }) => {
+const CommentSender = () => {
 
     const { request } = useHttp();
     const [text, setText] = useState('');
+    const { commetsClickedItem } = useContext(CommentsContext);
     const { token, userId } = JSON.parse(localStorage.getItem('userData'));
     const sendComment = useCallback(async () => {
-        console.log(postId);
-        await request('/api/comments/addcomment', 'POST', { text, userId, itemIdx: postId }, { Authorization: `Bearer ${token}` });
-
+        await request('/api/comments/addcomment', 'POST', { text, userId, itemId: commetsClickedItem }, { Authorization: `Bearer ${token}` });
     })
 
     const classes = useStyles();
