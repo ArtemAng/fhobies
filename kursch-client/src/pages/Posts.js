@@ -3,29 +3,42 @@ import Post from '../components/Post';
 import { useHttp } from '../hooks/http.hook';
 import { usePosts } from '../hooks/posts.hook';
 import { useAuth } from '../hooks/auth.hook';
+import { CommentsContext } from '../context/CommentsContext';
+import { useComments } from '../hooks/comments.hook';
 
 const Posts = () => {
 
     const [posts, setPosts] = useState([]);
     const { request } = useHttp();
     const { token, userId } = useAuth();
+    const { comments, setComments } = useComments();
 
     useEffect(async () => {
         try {
             const data = await request('/api/posts/', 'GET', null, { Authorization: `Bearer ${token}` });
-            console.log(data.posts, 'posts');
+            // console.log(data.posts, 'posts');
             setPosts(data.posts);
         } catch (error) { }
     }, [request])
 
+    useEffect(async () => {
+        try {
+            const data = await request('/api/comments', 'GET', null);
+            setComments(data.comments);
+        } catch (error) { }
+    }, [request])
+
     const like = useCallback(async (idPost) => {
-        const data = await request('/api/posts/like', 'POST', {userId, idPost }, { Authorization: `Bearer ${token}` })
+        try {
+            const data = await request('/api/posts/like', 'POST', { userId, idPost }, { Authorization: `Bearer ${token}` })
+        }
+        catch (e) { }
     })
 
     return (
-        <>
-            {posts.reverse().map((i, id) => <Post likes={i.likes} like={()=>like(id)} key={id} nickName={i.userName} title={i.title} description={i.description}></Post>)}
-        </>
+        <CommentsContext.Provider value={{comments, setComments}}>
+            {posts.reverse().map((i, id) => <Post id={i._id} postIdx={id} likes={i.likes} like={() => like(id)} key={id} nickName={i.userName} title={i.title} description={i.description}></Post>)}
+        </CommentsContext.Provider>
     );
 }
 export default Posts;

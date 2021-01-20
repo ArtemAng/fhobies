@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^12.6.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-dropzone": "^11.2.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
     "web-vitals": "^0.2.4"
@@ -26,7 +27,7 @@
       "react-app/jest"
     ]
   },
-  "proxy" : "http://localhost:1337",
+  "proxy": "http://localhost:1337",
   "browserslist": {
     "production": [
       ">0.2%",

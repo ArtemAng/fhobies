@@ -16,6 +16,9 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CommentsModal from './CommentsModal';
+import { CommentsContext } from '../context/CommentsContext';
+import { useEffect, useContext } from 'react';
+import ToolsMenu from '../components/ToolsMenu';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -47,10 +50,29 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const Post = ({ nickName, description, title, like, likes }) => {
+const Post = ({ id, nickName, description, title, like, likes, postIdx }) => {
 
     const classes = useStyles();
     const [open, setOpen] = useState(false);
+    const [postComments, setPostComments] = useState([]);
+    const { comments, setComments } = useContext(CommentsContext);
+    const [toolsOpen, setToolsOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleClick = (event) => {
+
+    };
+    useEffect(() => {
+        console.log(comments, 'comments post');
+        const filteredComments = comments.map(i => i._id === id ? i : null).filter(i => i !== null);
+        setPostComments(filteredComments);
+        // console.log(comments.map(i=>i._id===id? i:null));
+    }, [comments, setPostComments])
+
+    const openTools = (e) => {
+        setToolsOpen(!toolsOpen);
+        !toolsOpen ? setAnchorEl(e.currentTarget) : setAnchorEl(null);
+    }
 
     const handleOpen = () => {
         setOpen(true);
@@ -91,11 +113,12 @@ const Post = ({ nickName, description, title, like, likes }) => {
                 <Button variant='outlined' color='inherit' onClick={handleOpen}>
                     <ChatBubbleOutlineIcon />
                 </Button>
-                <Button variant='outlined' color='inherit' className={classes.moreBtn}>
+                <Button onClick={openTools} variant='outlined' color='inherit' className={classes.moreBtn}>
                     <MoreVertIcon />
                 </Button>
             </CardContent>
-            <CommentsModal open={open} handleClose={() => handleClose()} />
+            <CommentsModal id={id} postComments={postComments} postId={postIdx} open={open} handleClose={() => handleClose()} />
+            <ToolsMenu postIdx={postIdx} anchorEl={anchorEl} openTools={() => openTools()} isOpen={toolsOpen} />
         </Card>
     );
 }

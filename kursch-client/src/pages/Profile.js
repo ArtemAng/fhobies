@@ -8,8 +8,10 @@ import dropImage from '../images/drop.png';
 import { useItem } from '../hooks/item.hook';
 import { useCollections } from '../hooks/collections.hook';
 import CollectionsList from '../components/CollectionsList';
-import {CollectionsContext} from '../context/CollectionContext'
+import { CollectionsContext } from '../context/CollectionContext'
 import { useHttp } from '../hooks/http.hook';
+import Dropzone from '../components/Dropzone';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         padding: 10,
@@ -33,29 +35,28 @@ const Profile = () => {
     const classes = useStyles();
     const { item, editItem } = useItem();
     const { collections, addCollection, setCollections } = useCollections();
-    const {request} = useHttp();
-    const {token, userId} = JSON.parse(localStorage.getItem('userData'));
+    const { request } = useHttp();
+    const { token, userId } = JSON.parse(localStorage.getItem('userData'));
 
-    useEffect(() => {
-        console.log(item, '-------------------effect')
-    }, [item, collections]);
+    // useEffect(() => {
+    //     console.log(item, '-------------------effect')
+    // }, [item, collections]);
 
-    useEffect( async ()=>{
+    useEffect(async () => {
         try {
             const data = await request('/api/collections/', 'GET', null, { Authorization: `Bearer ${token}` });
-            console.log(data.collections);
             setCollections(data.collections);
-        } catch (error) {}
+        } catch (error) { }
     }, [request])
     return (
         <ItemContext.Provider value={{ item, editItem }}>
-            <CollectionsContext.Provider value ={{collections, addCollection, setCollections}}>
+            <CollectionsContext.Provider value={{ collections, addCollection, setCollections }}>
                 <Grid container justify='center' className={classes.root}>
                     <Grid item xs={12} sm={2} className={classes.imageDropper}>
                         <Paper className={classes.imageDropper}>
                             {/* <img src={dropImage}/> */}
-                    drop your image here
-                </Paper>
+                           <Dropzone/>
+                        </Paper>
                     </Grid>
                     <Grid item xs={12} sm={6} className={classes.paper}>
                         <AddPostForm />

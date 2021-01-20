@@ -16,7 +16,7 @@ const useStyles = makeStyles({
     },
 })
 
-const Comment = () => {
+const Comment = ({text}) => {
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -26,7 +26,7 @@ const Comment = () => {
                     nickname
             </Typography>
                 <Typography component='p'>
-                    comment comment comment commentcomment comment comment  comment
+                   {text}
             </Typography>
             </div>
         </div>

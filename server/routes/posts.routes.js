@@ -57,6 +57,20 @@ router.post('/like', async (req, res) => {
     } catch (e) {
         res.status(500).json({ message: 'Something wrong, try again.' });
     }
+});
+
+router.post('/deleteItem', async (req, res) => {
+    try {
+        const {postIdx} = req.body;
+        const items = await Item.find();
+        const newItem = await Item.findOneAndRemove({_id: items[postIdx]._id});
+        newItem.save();
+        console.log(items[postIdx], postIdx);
+
+        res.status(200).json({ message: 'item is liked' });
+    } catch (e) {
+        res.status(500).json({ message: 'Something wrong, try again.' });
+    }
 })
 
 router.get('/', async (req, res) => {
