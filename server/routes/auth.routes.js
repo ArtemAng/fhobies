@@ -5,8 +5,20 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const User = require('../models/User');
 const auth = require('../midlewares/auth.midleware');
+const passport = require('passport');
+const FacebookStrategy = require('passport-facebook').Strategy;
 
 const router = Router();
+
+passport.use(new FacebookStrategy({
+    clientID: '471984513960504',
+    clientSecret: '6a2c72d1f589fd166382e27815b92b84',
+    callbackURL: "http://localhost:3000/SignIn/facebook"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    console.log(accessToken, refreshToken, profile, done);
+  }
+));
 
 router.post(
     '/signup',
@@ -79,6 +91,32 @@ router.post(
             const token = jwt.sign({ userId: user.id }, config.get('jwtSecret'), { expiresIn: '1h' });
             res.json({ token, id: user.id, email })
             user.save();///
+        } catch (e) {
+            res.status(500).json({ message: 'Something wrong, try again.' })
+        }
+    }
+);
+
+router.post(
+    '/facebooksignin',
+    async (req, res) => {
+        try {
+            const {name, email, accessToken} = req.body;
+            console.log('tut', accessToken);
+            // if (!accessTocken) {
+            //     res.status(401).json({ message: 'No access token' });
+            // }
+
+            const candidate = await User.findOne({ email});
+            if (candidate) {
+                res.status(200).json({userId: candidate._id});
+            }
+            const password = await bcrypt.hash(accessToken, 12);
+
+            const user = await new User({ email, name, password});
+            await user.save();
+            res.status(200).json({userId: user._id});
+
         } catch (e) {
             res.status(500).json({ message: 'Something wrong, try again.' })
         }

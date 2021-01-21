@@ -1,7 +1,6 @@
 const { Router } = require('express');
-const Item = require('../models/Collection');
 const User = require('../models/User');
-const Collection = require('../models/Item');
+const Collection = require('../models/Collection');
 
 const router = Router();
 
@@ -9,28 +8,26 @@ router.post(
     '/addpost',
     async (req, res) => {
         try {
-            const condidateItem = req.body;
-            const collection = await Collection.findOne({ collectionName: condidateItem.collectionName });
+            const candidateItem = req.body;
 
-            if (!collection)
-                res.status(400).json({ message: 'This collection does not exist.' });
-
-            const user = await User.findOne({ _id: condidateItem.userId });
+            
+            // if (!collection)
+            // res.status(400).json({ message: 'This collection does not exist.' });
+            
+            const user = await User.findOne({ _id: candidateItem.userId });
             // console.log(user);
-            const newItem = {
+            const newCollection = {
                 userName: user.name,
-                collectionName: condidateItem.collectionName,
-                title: condidateItem.title,
-                description: condidateItem.description,
-                likes: [],
-                collectionId: collection._id,
-                userId: condidateItem.userId,
-                comments: ''
+                title: candidateItem.title,
+                description: candidateItem.description,
+                // collectionId: collection._id,
+                userId: candidateItem.userId,
             }
-
-            const item = await new Item({ ...newItem });
-            item.save();
-            res.status(200).json({ message: 'item is added' });
+            console.log(candidateItem);
+            
+            const collection = await new Collection({ ...newCollection });
+            collection.save();
+            res.status(200).json({ message: 'Collection is added' });
 
         } catch (e) {
             res.status(500).json({ message: 'Something wrong, try again.' })
@@ -62,10 +59,10 @@ router.post('/like', async (req, res) => {
 router.post('/deleteItem', async (req, res) => {
     try {
         const {postIdx} = req.body;
-        const items = await Item.find();
-        const newItem = await Item.findOneAndRemove({_id: items[postIdx]._id});
+        console.log(postIdx, 'items');
+        const items = await Collection.find();
+        const newItem = await Collection.findOneAndRemove({_id: postIdx});
         newItem.save();
-        console.log(items[postIdx], postIdx);
 
         res.status(200).json({ message: 'item is liked' });
     } catch (e) {
@@ -75,7 +72,7 @@ router.post('/deleteItem', async (req, res) => {
 
 router.get('/', async (req, res) => {
     try {
-        const posts = await Item.find();
+        const posts = await Collection.find();
         // console.log(posts);
 
         res.status(200).json({ posts })

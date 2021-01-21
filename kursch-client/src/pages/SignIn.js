@@ -13,6 +13,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useMessage } from '../hooks/message.hook';
 import { useHttp } from '../hooks/http.hook';
 import {AuthContext} from '../context/AuthContext';
+import FacebookBtn from 'react-facebook-login'
 
 function Copyright() {
   return (
@@ -81,6 +82,15 @@ export default function SignInSide() {
     } catch (e) {}
   };
   
+  const registrationHandle = useCallback(async (res) => {
+    try {
+      console.log({...res});
+      const {email, name, accessToken} = res;
+      const data = await request('/api/auth/facebooksignin', 'POST', { ...res });
+      auth.login(res.accessToken, data.userId);
+      message(data.message)
+    } catch (e) { }
+  }, [message, formData, request]);
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -133,6 +143,15 @@ export default function SignInSide() {
             >
               Sign In
             </Button>
+            
+            <FacebookBtn
+              appId='471984513960504'
+              autoLoad={false}
+              fields='name,email'
+              // callback='http://localhost:1337/SignIn/facebook'
+              callback={registrationHandle}
+            />
+
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">

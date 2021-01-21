@@ -24,7 +24,6 @@ router.post('/like', async (req, res) => {
         // const currentIndex = items.length - idPost - 1;
         // const currentItem = await Item.findOne({_id: items[idPost]._id});
         const candidate = item.likes.indexOf(userId);
-        console.log('sdec', candidate);
         if (candidate !== -1)
             item.likes.splice(candidate, 1);
         else
