@@ -34,13 +34,13 @@ const Posts = () => {
 
     const like = useCallback(async (idPost) => {
         try {
-            const data = await request('/api/posts/like', 'POST', { userId, idPost }, { Authorization: `Bearer ${token}` })
+            const data = await request('/api/posts/like', 'POST', { userId, idPost }, { Authorization: `Bearer ${token}` });
         }
         catch (e) { }
     })
     return (
             <CommentsContext.Provider value={{ comments, setComments }}>
-                {posts.reverse().map((i, id) => <Post id={i._id} postIdx={id} likes={i.likes} like={() => like(id)} key={id} nickName={i.userName} title={i.title} description={i.description}></Post>)}
+                {posts.reverse().map((i, id) => <Post image={i.image} id={i._id} postIdx={id} likes={i.likes} like={() => like(id)} key={id} nickName={i.userName} title={i.title} description={i.description}></Post>)}
             </CommentsContext.Provider>
 
     );

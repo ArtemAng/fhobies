@@ -5,6 +5,7 @@ const schema = new Schema({
     // collectionName: {type: String, required: true},
     title: {type: String, required: true},
     description: {type: String, required: true},
+    image: {type: String, required: true},
     // collectionId: { type: Types.ObjectId, ref: 'Collection', required: true },
     userId: { type: Types.ObjectId, ref: 'User', required: true },
 });

@@ -19,13 +19,12 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const Dropzone = () => {
-    const setImage = () => {
-        console.log('hello');
-    }
-    const classes = useStyles();
+const Dropzone = ({setImage}) => {
 
+    const classes = useStyles();
+    
     const [previewSource, setPreviewSource] = useState(null);
+
     const onDrop = useCallback(
         (acceptedFile) => {
             const reader = new FileReader();

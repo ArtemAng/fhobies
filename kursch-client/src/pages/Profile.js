@@ -11,6 +11,7 @@ import CollectionsList from '../components/CollectionsList';
 import { CollectionsContext } from '../context/CollectionContext'
 import { useHttp } from '../hooks/http.hook';
 import Dropzone from '../components/Dropzone';
+import {useState} from 'react';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -37,7 +38,7 @@ const Profile = () => {
     const { collections, addCollection, setCollections } = useCollections();
     const { request } = useHttp();
     const { token, userId } = JSON.parse(localStorage.getItem('userData'));
-
+    const [image, setImage] = useState();
     // useEffect(() => {
     //     console.log(item, '-------------------effect')
     // }, [item, collections]);
@@ -55,11 +56,11 @@ const Profile = () => {
                     <Grid item xs={12} sm={2} className={classes.imageDropper}>
                         <Paper className={classes.imageDropper}>
                             {/* <img src={dropImage}/> */}
-                           <Dropzone/>
+                           <Dropzone setImage ={(img)=>setImage(img)}/>
                         </Paper>
                     </Grid>
                     <Grid item xs={12} sm={6} className={classes.paper}>
-                        <AddPostForm />
+                        <AddPostForm image={image}/>
                     </Grid>
                     <Grid item xs={12} sm={2}>
                         <CollectionsList />

@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const AddPostForm = () => {
+const AddPostForm = ({image}) => {
     const classes = useStyles();
     const { item, editItem } = useContext(ItemContext);
     const { request, error, clearError } = useHttp();
@@ -58,7 +58,7 @@ const AddPostForm = () => {
 
     const submitHandler = async () => {
         try {
-            const data = await request('/api/posts/addPost', 'POST', { ...item, userId });
+            const data = await request('/api/posts/addPost', 'POST', { ...item, userId, image });
             message(data.message)
         } catch (e) { }
     }

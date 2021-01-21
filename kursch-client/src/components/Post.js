@@ -21,6 +21,7 @@ import { Link } from 'react-router-dom';
 import { useHttp } from '../hooks/http.hook';
 import { useCallback } from 'react';
 import { ItemsContext } from '../context/ItemsContext';
+import { Image } from "cloudinary-react";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -52,7 +53,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const Post = ({ id, nickName, description, title, like, likes, postIdx }) => {
+const Post = ({ image, id, nickName, description, title, like, likes, postIdx }) => {
 
     const classes = useStyles();
     const [postComments, setPostComments] = useState([]);
@@ -60,9 +61,9 @@ const Post = ({ id, nickName, description, title, like, likes, postIdx }) => {
     const [toolsOpen, setToolsOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const { request } = useHttp();
-    const {setCurrentId} = useContext(ItemsContext)
+    const { setCurrentId } = useContext(ItemsContext)
     useEffect(() => {
-        console.log(comments, 'comments post');
+        console.log(image, 'comments post');
         const filteredComments = comments.map(i => i._id === id ? i : null).filter(i => i !== null);
         setPostComments(filteredComments);
         // console.log(comments.map(i=>i._id===id? i:null));
@@ -73,7 +74,7 @@ const Post = ({ id, nickName, description, title, like, likes, postIdx }) => {
         !toolsOpen ? setAnchorEl(e.currentTarget) : setAnchorEl(null);
     }
 
-    
+
 
     return (
         <Card className={classes.root}>
@@ -89,13 +90,16 @@ const Post = ({ id, nickName, description, title, like, likes, postIdx }) => {
                 </CardContent>
             </CardActionArea>
 
-            <CardActionArea onClick={()=>setCurrentId(id)}>
+            <CardActionArea onClick={() => setCurrentId(id)}>
                 <Link to='/collectionItems'>
-                    <CardMedia
+                    {/* <CardMedia
                         component='img'
                         alt='collection item photo'
+                        height='300'> */}
+                    <Image cloudName="dmqwdeeva"
                         height='300'
-                        image={testImg} />
+                        publicId={image} />
+                    {/* </CardMedia> */}
                 </Link>
             </CardActionArea>
 

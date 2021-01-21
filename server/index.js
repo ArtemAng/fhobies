@@ -6,7 +6,7 @@ const cors = require('cors');
 const app = express();
 
 app.use(cors());
-app.use(express.json({ extended: true }));
+app.use(express.json({ extended: true, limit: '50mb' }));
 app.use('/api/auth', require('./routes/auth.routes.js'));
 app.use('/api/posts', require('./routes/posts.routes.js'));
 app.use('/api/collections', require('./routes/collections.routes.js'));

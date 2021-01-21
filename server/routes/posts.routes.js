@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const User = require('../models/User');
 const Collection = require('../models/Collection');
+const {cloudinary} = require('../cloud');
 
 const router = Router();
 
@@ -10,10 +11,14 @@ router.post(
         try {
             const candidateItem = req.body;
 
-            
+            // console.log(candidateItem.image);
+            const uploadedResponse = await cloudinary.uploader.upload(
+                req.body.image,
+                { upload_preset: "ml_default" }
+            );
             // if (!collection)
             // res.status(400).json({ message: 'This collection does not exist.' });
-            
+
             const user = await User.findOne({ _id: candidateItem.userId });
             // console.log(user);
             const newCollection = {
@@ -21,15 +26,16 @@ router.post(
                 title: candidateItem.title,
                 description: candidateItem.description,
                 // collectionId: collection._id,
+                image: uploadedResponse.public_id,
                 userId: candidateItem.userId,
             }
-            console.log(candidateItem);
-            
+
             const collection = await new Collection({ ...newCollection });
             collection.save();
             res.status(200).json({ message: 'Collection is added' });
 
         } catch (e) {
+            console.log(e.message);
             res.status(500).json({ message: 'Something wrong, try again.' })
         }
     }
@@ -40,9 +46,9 @@ router.post('/like', async (req, res) => {
         const { userId, idPost } = req.body;
         const items = await Item.find();
         // const currentIndex = items.length - idPost - 1;
-        const currentItem = await Item.findOne({_id: items[idPost]._id});
+        const currentItem = await Item.findOne({ _id: items[idPost]._id });
         const candidate = currentItem.likes.indexOf(userId);
-        if(candidate!==-1)
+        if (candidate !== -1)
             currentItem.likes.splice(candidate, 1);
         else
             currentItem.likes.push(userId);
@@ -58,10 +64,10 @@ router.post('/like', async (req, res) => {
 
 router.post('/deleteItem', async (req, res) => {
     try {
-        const {postIdx} = req.body;
+        const { postIdx } = req.body;
         console.log(postIdx, 'items');
         const items = await Collection.find();
-        const newItem = await Collection.findOneAndRemove({_id: postIdx});
+        const newItem = await Collection.findOneAndRemove({ _id: postIdx });
         newItem.save();
 
         res.status(200).json({ message: 'item is liked' });
