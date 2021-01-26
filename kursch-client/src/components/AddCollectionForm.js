@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useContext, useState } from 'react';
 import { CollectionsContext } from '../context/CollectionContext';
 import { useHttp } from '../hooks/http.hook';
-import { useMessage } from '../hooks/message.hook';
 
 const useStyles = makeStyles((theme) => ({
     tf: {
@@ -25,8 +24,7 @@ const AddCollectionForm = () => {
     const { addCollection } = useContext(CollectionsContext);
     const classes = useStyles();
     const [collectionName, setCollectionName] = useState('');
-    const { request, error, clearError } = useHttp();
-    const message = useMessage();
+    const { request } = useHttp();
 
     const collectionNameHandle = (e) => setCollectionName(e.target.value);
 
@@ -34,7 +32,7 @@ const AddCollectionForm = () => {
         try {
             addCollection(collectionName);
             const user = JSON.parse(localStorage.getItem('userData'));
-            const data = await request('/api/collections/addcollection', 'POST', { collectionName, userId: user.userId});
+             await request('/api/collections/addcollection', 'POST', { collectionName, userId: user.userId});
             // message(data.message);
         } catch (e) {}
     }

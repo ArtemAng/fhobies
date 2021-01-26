@@ -1,15 +1,10 @@
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import AddPostForm from '../components/AddPostForm';
 import { ItemContext } from '../context/ItemContext';
-import { useContext, useEffect } from 'react';
-import dropImage from '../images/drop.png';
 import { useItem } from '../hooks/item.hook';
 import { useCollections } from '../hooks/collections.hook';
-import CollectionsList from '../components/CollectionsList';
 import { CollectionsContext } from '../context/CollectionContext'
-import { useHttp } from '../hooks/http.hook';
 import Dropzone from '../components/Dropzone';
 import {useState} from 'react';
 
@@ -36,35 +31,28 @@ const Profile = () => {
     const classes = useStyles();
     const { item, editItem } = useItem();
     const { collections, addCollection, setCollections } = useCollections();
-    const { request } = useHttp();
-    const { token, userId } = JSON.parse(localStorage.getItem('userData'));
+    // const { request } = useHttp();
+    // const { token } = JSON.parse(localStorage.getItem('userData'));
     const [image, setImage] = useState();
-    // useEffect(() => {
-    //     console.log(item, '-------------------effect')
-    // }, [item, collections]);
 
-    useEffect(async () => {
-        try {
-            const data = await request('/api/collections/', 'GET', null, { Authorization: `Bearer ${token}` });
-            setCollections(data.collections);
-        } catch (error) { }
-    }, [request])
+    // useEffect(useCallback(async () => {
+    //     try {
+    //         const data = await request('/api/collections/', 'GET', null, { Authorization: `Bearer ${token}` });
+    //         setCollections(data.collections);
+    //     } catch (error) { }
+    // }), [request])
     return (
         <ItemContext.Provider value={{ item, editItem }}>
             <CollectionsContext.Provider value={{ collections, addCollection, setCollections }}>
                 <Grid container justify='center' className={classes.root}>
-                    <Grid item xs={12} sm={2} className={classes.imageDropper}>
-                        <Paper className={classes.imageDropper}>
+                    <Grid item xs={12} sm={3} className={classes.imageDropper}>
                             {/* <img src={dropImage}/> */}
                            <Dropzone setImage ={(img)=>setImage(img)}/>
-                        </Paper>
                     </Grid>
                     <Grid item xs={12} sm={6} className={classes.paper}>
                         <AddPostForm image={image}/>
                     </Grid>
-                    <Grid item xs={12} sm={2}>
-                        <CollectionsList />
-                    </Grid>
+
                 </Grid>
             </CollectionsContext.Provider>
         </ItemContext.Provider>

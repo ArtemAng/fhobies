@@ -2,47 +2,25 @@ import {
     Paper,
     Button,
     TextField,
-    ThemeProvider
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { ItemContext } from '../context/ItemContext';
 import { useHttp } from '../hooks/http.hook';
 import { useMessage } from '../hooks/message.hook';
-import FormControll from '../components/FormControll';
 import { CollectionsContext } from '../context/CollectionContext';
 
 const useStyles = makeStyles((theme) => ({
     form: {
         padding: theme.spacing(2),
-        backgroundColor: theme.palette.primary.main,
-        '& .MuiInputBase-input': {
-            color: 'white',
-            borderColor: 'white',
-        },
-        '& label.Mui-focused': {
-            color: 'white',
-        },
-        '& .MuiInput-underline:after': {
-            borderBottomColor: 'white',
-        },
-        '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-                borderColor: 'white',
-            },
-            '&:hover fieldset': {
-                borderColor: 'white',
-            },
-            '&.Mui-focused fieldset': {
-                borderColor: 'white',
-            },
-        },
+       
     },
     inputs: {
         marginBottom: 20,
-
+    },
+    btn:{
+        width: 200,
     }
-
 }));
 
 const AddPostForm = ({image}) => {
@@ -65,31 +43,31 @@ const AddPostForm = ({image}) => {
     return (
         <Paper className={classes.form}>
             <TextField
-                label="Item name"
+                label="Title"
                 color='secondary'
                 variant='filled'
                 className={classes.inputs}
                 onChange={titleChangeHandler}
                 name='title'
             />
-            <FormControll datas={collections} onChanged={(e)=> editItem(e)} />
             <TextField
-                label="Item description"
+                label="Description"
                 fullWidth
                 multiline
                 rows={6}
                 color='secondary'
                 name='description'
                 className={classes.inputs}
-                variant="outlined"
+                variant='filled'
                 onChange={descriptionChangeHandler}
             />
             <Button
-                variant='outlined'
+                variant='contained'
                 color='secondary'
                 onClick={submitHandler}
+                className={classes.btn}
             >
-                Submit
+                Add
             </Button>
         </Paper>
     );

@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import { TextField, Button } from '@material-ui/core';
 import { useHttp } from '../hooks/http.hook';
-import { CommentsContext } from '../context/CommentsContext';
 
 function getModalStyle() {
     const top = 50;

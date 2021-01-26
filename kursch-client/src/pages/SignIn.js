@@ -85,12 +85,12 @@ export default function SignInSide() {
   const registrationHandle = useCallback(async (res) => {
     try {
       console.log({...res});
-      const {email, name, accessToken} = res;
       const data = await request('/api/auth/facebooksignin', 'POST', { ...res });
       auth.login(res.accessToken, data.userId);
       message(data.message)
     } catch (e) { }
-  }, [message, formData, request]);
+  }, [message, auth, request]);
+  // }, [message, formData, request]);
 
   return (
     <Grid container component="main" className={classes.root}>

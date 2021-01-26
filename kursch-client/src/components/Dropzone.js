@@ -1,28 +1,30 @@
-import { Typography } from '@material-ui/core';
+import { Card, CardContent, CardMedia, Typography } from '@material-ui/core';
 import { useCallback, useState, Fragment } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     preview: {
-        width: 150,
-        height: 150
+        margin: 10
     },
-    dropField:{
-        position: 'absolute',
-        zIndex: 1,
-        width: 150,
-        margin: 10,
+    text: {
+        textAlign: 'center',
+        color: '#8d8d8d',
     },
-    place:{
+    dropField: {
+        border: '1px dashed #8d8d8d ',
+        borderRadius: 5
+    },
+    place: {
+        height: 250,
         alignItems: 'center',
     }
 }));
 
-const Dropzone = ({setImage}) => {
+const Dropzone = ({ setImage }) => {
 
     const classes = useStyles();
-    
+
     const [previewSource, setPreviewSource] = useState(null);
 
     const onDrop = useCallback(
@@ -43,29 +45,28 @@ const Dropzone = ({setImage}) => {
         multiple: false,
     });
     return (
-        <div className={classes.place}>
-            <div className={classes.dropField} {...getRootProps()}>
-                <input  {...getInputProps()} />
+        <Card className={classes.place}>
+            <CardContent className={classes.dropField} {...getRootProps()}>
+                <input className={classes.input}  {...getInputProps()} />
                 <div >
                     {isDragActive ? (
-                        <Typography variant='h6' component='h6'>
-                            Отпустите, для добавления изображения
+                        <Typography variant='p' component='h4' className={classes.text}>
+                            Drop your image
                         </Typography>
                     ) : (
-                            <Typography variant='h6' component='h6'>
-                                Перетащите или кликните для добавления изображения
+                            <Typography  component='p' className={classes.text}>
+                                Drag or choose your image here
                             </Typography>
                         )}
                 </div>
-            </div>
+            </CardContent>
             {previewSource && (
-                <img
-                    className={classes.preview}
-                    src={previewSource}
-                    alt="preview"
-                />
+                <CardMedia
+                    component='img'
+                    alt='collection item photo'
+                    src={previewSource}/>
             )}
-        </div>
+        </Card>
     );
 }
 export default Dropzone;

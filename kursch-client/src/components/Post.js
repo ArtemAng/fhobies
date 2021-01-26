@@ -3,23 +3,16 @@ import {
     Card,
     CardActionArea,
     CardContent,
-    CardMedia,
     makeStyles,
     Typography,
     Avatar,
-    Divider,
     Button
 } from '@material-ui/core';
 import testImg from '../images/as.jpg';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
-import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { CommentsContext } from '../context/CommentsContext';
-import { useEffect, useContext } from 'react';
+import { useContext } from 'react';
 import ToolsMenu from '../components/ToolsMenu';
 import { Link } from 'react-router-dom';
-import { useHttp } from '../hooks/http.hook';
-import { useCallback } from 'react';
 import { ItemsContext } from '../context/ItemsContext';
 import { Image } from "cloudinary-react";
 
@@ -56,18 +49,15 @@ const useStyles = makeStyles(theme => ({
 const Post = ({ image, id, nickName, description, title, like, likes, postIdx }) => {
 
     const classes = useStyles();
-    const [postComments, setPostComments] = useState([]);
-    const { comments, setComments } = useContext(CommentsContext);
+    // const [postComments, setPostComments] = useState([]);
     const [toolsOpen, setToolsOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
-    const { request } = useHttp();
     const { setCurrentId } = useContext(ItemsContext)
-    useEffect(() => {
-        console.log(image, 'comments post');
-        const filteredComments = comments.map(i => i._id === id ? i : null).filter(i => i !== null);
-        setPostComments(filteredComments);
-        // console.log(comments.map(i=>i._id===id? i:null));
-    }, [comments, setPostComments])
+    // useEffect(() => {
+    //     const filteredComments = comments.map(i => i._id === id ? i : null).filter(i => i !== null);
+    //     setPostComments(filteredComments);
+    //     // console.log(comments.map(i=>i._id===id? i:null));
+    // }, [comments, setPostComments])
 
     const openTools = (e) => {
         setToolsOpen(!toolsOpen);
@@ -98,6 +88,7 @@ const Post = ({ image, id, nickName, description, title, like, likes, postIdx })
                         height='300'> */}
                     <Image cloudName="dmqwdeeva"
                         height='300'
+                        width='100%'
                         publicId={image} />
                     {/* </CardMedia> */}
                 </Link>

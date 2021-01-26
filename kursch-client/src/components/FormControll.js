@@ -4,8 +4,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import Button from '@material-ui/core/Button';
-import { useItem } from '../hooks/item.hook';
+// import { useItem } from '../hooks/item.hook';
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -22,7 +21,7 @@ export default function ControlledOpenSelect({ title, datas, onChanged=()=>{} })
     const classes = useStyles();
     const [collectionName, setCollectionName] = React.useState('');
     const [open, setOpen] = React.useState(false);
-    const {editItem} = useItem();
+    // const {editItem} = useItem();
 
     const handleChange = (event) => {
         setCollectionName(event.target.value);

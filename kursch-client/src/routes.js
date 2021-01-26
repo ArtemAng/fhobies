@@ -1,15 +1,14 @@
 import {
     Switch,
     Route,
-    Redirect,
-    Router
+    Redirect
 } from 'react-router-dom';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Posts from './pages/Posts';
 import Profile from './pages/Profile';
 import CollectionItems from './pages/CollectionItems';
-
+import Admin from './pages/Admin';
 // export const useRoutes = (isAutentificated) => {
 //     if (isAutentificated)
 //         return (
@@ -47,12 +46,15 @@ import CollectionItems from './pages/CollectionItems';
 //         </Switch>
 //     )
 // }
-export const useRoutes = (isAutentificated) => {
+export const useRoutes = (isAutentificated, openDrawer, isAdmin, openDrawerHandle) => {
     if (isAutentificated)
         return (
             <Switch>
                 <Route path='/collectionitems' component={CollectionItems} />
                 <Route path='/profile' component={Profile} />
+                <Route path='/admin'  >
+                    <Admin open={openDrawer} openDrawerHandle={openDrawerHandle} />
+                </Route>
                 <Route path='/SignIn' >
                     <Redirect to='/' />
                 </Route>
@@ -66,6 +68,9 @@ export const useRoutes = (isAutentificated) => {
         return (
             <Switch>
                 <Route path='/collectionitems' component={CollectionItems} />
+                <Route path='/admin'  >
+                    <Admin open={openDrawer}/>
+                </Route>
                 <Route path='/profile' component={Profile} />
                 <Route path='/SignIn' >
                     <SignIn />

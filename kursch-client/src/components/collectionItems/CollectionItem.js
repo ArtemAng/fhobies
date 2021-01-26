@@ -53,10 +53,10 @@ const CollectionItem = ({ title, tags, id, likes }) => {
 
     const likeHandle = useCallback(async () => {
         try {
-            const data = await request('/api/collectionitems/like', 'POST', { userId, itemId: id })
+            await request('/api/collectionitems/like', 'POST', { userId, itemId: id })
             
         } catch (e) {}
-    })
+    }, [request])
 
     return (
         <Card className={classes.root}>

@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import { Divider, Typography } from '@material-ui/core';
+import { Divider, } from '@material-ui/core';
 import CommentSender from './CommentSender';
 import Comment from './Comment';
 import { useHttp } from '../hooks/http.hook';
-import {CommentsContext} from '../context/CommentsContext';
+import { CommentsContext } from '../context/CommentsContext';
 
 function getModalStyle() {
     const top = 50;
@@ -30,24 +30,23 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function SimpleModal({postId, open, handleClose }) {
+export default function SimpleModal({ postId, open, handleClose }) {
     const classes = useStyles();
     const [modalStyle] = useState(getModalStyle);
-    const { request } = useHttp();
-    const { comments, setComments, commetsClickedItem } = useContext(CommentsContext);
+    const { comments, commetsClickedItem } = useContext(CommentsContext);
 
 
-    
+
 
 
     const opened = open || false;
     const body = (
         <Fade in={opened}>
             <div style={modalStyle} className={classes.paper}>
-            {/* kostiiiiiiliiiii */}
-                {comments.filter(i=>i.itemId===commetsClickedItem).map((i, id) => <Comment key={id} text={i.text} />)} 
+                {/* kostiiiiiiliiiii */}
+                {comments.filter(i => i.itemId === commetsClickedItem).map((i, id) => <Comment key={id} text={i.text} />)}
                 <Divider />
-                <CommentSender/>
+                <CommentSender />
                 <SimpleModal />
             </div>
         </Fade>

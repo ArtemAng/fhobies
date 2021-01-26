@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme)=>({
         backgroundColor: theme.palette.primary.backgroundColor,
         color: theme.palette.primary.contrastText,
         '&:hover': {
-            color: theme.palette.inherit.contrastText
+            color: theme.palette.primary.contrastText
         }
     }
 }));

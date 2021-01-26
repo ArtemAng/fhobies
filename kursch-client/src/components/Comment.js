@@ -1,9 +1,8 @@
-import { Avatar, Button, Divider, Input, Typography } from '@material-ui/core';
+import { Avatar,  Typography } from '@material-ui/core';
 import React from 'react';
 import testImage from '../images/tlou2.jpg';
 import { makeStyles } from '@material-ui/core/styles';
-import { TextField } from '@material-ui/core';
-import SendIcon from '@material-ui/icons/Send';
+
 
 const useStyles = makeStyles({
     root: {

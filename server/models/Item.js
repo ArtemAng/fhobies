@@ -6,8 +6,8 @@ const schema = new Schema({
     name: { type: String, required: true},
     collectionId: {type: Types.ObjectId, required: true},
     likes: {type: Array, required: true},
-    
-    // items: { type: Types.Array } //requiered
+    Date: { type: Date},
+    authorName: { type: String}
 });
 
 module.exports = model('CollectionItem', schema);
