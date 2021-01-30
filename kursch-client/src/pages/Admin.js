@@ -97,7 +97,7 @@ export default function Dashboard({ open, openDrawerHandle }) {
 
   const addPropsHandle = (value) => {
     const { props } = data;
-    if (value.type && value.name && props.findIndex(i => i.name == value.name) == -1)
+    if (value.type && value.name && props.findIndex(i => i.name === value.name) === -1)
       setData({ ...data, props: [...props, value] });
   }
   const removePropHandle = (idx) => {
