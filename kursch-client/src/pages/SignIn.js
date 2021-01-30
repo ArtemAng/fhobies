@@ -110,6 +110,7 @@ export default function SignInSide() {
               margin="normal"
               required
               fullWidth
+              color="secondary"
               id="email"
               label="Email Address"
               name="email"
@@ -120,6 +121,7 @@ export default function SignInSide() {
             <TextField
               variant="outlined"
               margin="normal"
+              color="secondary"
               required
               fullWidth
               name="password"
@@ -135,6 +137,7 @@ export default function SignInSide() {
             /> */}
             <Button
               type="submit"
+              color="secondary"
               fullWidth
               variant="contained"
               color="primary"

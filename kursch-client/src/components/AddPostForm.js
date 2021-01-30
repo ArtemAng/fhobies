@@ -37,7 +37,7 @@ const AddPostForm = ({image}) => {
     const submitHandler = async () => {
         try {
             const data = await request('/api/posts/addPost', 'POST', { ...item, userId, image });
-            message(data.message)
+            await message(data.message)
         } catch (e) { }
     }
     return (

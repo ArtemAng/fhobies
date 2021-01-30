@@ -35,10 +35,6 @@ export default function SimpleModal({ postId, open, handleClose }) {
     const [modalStyle] = useState(getModalStyle);
     const { comments, commetsClickedItem } = useContext(CommentsContext);
 
-
-
-
-
     const opened = open || false;
     const body = (
         <Fade in={opened}>

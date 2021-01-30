@@ -18,8 +18,8 @@ router.post(
             );
             // if (!collection)
             // res.status(400).json({ message: 'This collection does not exist.' });
-
             const user = await User.findOne({ _id: candidateItem.userId });
+            console.log(candidateItem.userId);
             // console.log(user);
             const newCollection = {
                 userName: user.name,
@@ -29,9 +29,9 @@ router.post(
                 image: uploadedResponse.public_id,
                 userId: candidateItem.userId,
             }
-
+            
             const collection = await new Collection({ ...newCollection });
-            collection.save();
+            await collection.save();
             res.status(200).json({ message: 'Collection is added' });
 
         } catch (e) {

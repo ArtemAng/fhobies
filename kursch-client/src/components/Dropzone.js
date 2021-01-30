@@ -32,7 +32,6 @@ const Dropzone = ({ setImage }) => {
             const reader = new FileReader();
             reader.readAsDataURL(acceptedFile[0]);
             reader.onloadend = () => {
-                console.log(reader.result);
                 setPreviewSource(reader.result);
                 setImage(reader.result);
             };
