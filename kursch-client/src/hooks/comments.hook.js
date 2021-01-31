@@ -8,13 +8,15 @@ export const useComments = () => {
         setCommentsCollection([...comments])
     };
 
-    const setCurrentItemId = (id) =>{
+    const setCurrentItemId = (id) => {
         setClickedItem(id);
     }
-
-    const removeComment = ( id ) => {
+    const addComment = (comment) => {
+        setClickedItem([...сommentsCollection, comment]);
+    }
+    const removeComment = (id) => {
         console.log(id, 'removeComment comment.hook.js');
         // setItem({ ...item, likes: arr.length });
     }
-    return { setComments, removeComment, comments: сommentsCollection , commetsClickedItem, setCurrentItemId}
+    return { setComments, removeComment, comments: сommentsCollection, addComment, commetsClickedItem, setCurrentItemId }
 }

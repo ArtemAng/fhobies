@@ -1,10 +1,11 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import { TextField, Button } from '@material-ui/core';
 import { useHttp } from '../hooks/http.hook';
+import {SocketContext} from '../context/SocketContext';
 
 function getModalStyle() {
     const top = 50;
@@ -34,6 +35,8 @@ export default function SimpleModal({ id, postComments, postId, open, close, }) 
     const { request, message } = useHttp();
     const {token, userId} = JSON.parse(localStorage.getItem('userData'));
     const changeData = (e)=>setFormData({...formData, [e.target.name]: e.target.value});
+    const {socket} = useContext(SocketContext);
+
     const addItem = useCallback(async ()=>{
         try {
             const data = await request('/api/collectionitems/addItem', 'POST', {collectionId: id, ...formData, userId}, {Authorization: 'Bearer ' + token});
@@ -42,15 +45,18 @@ export default function SimpleModal({ id, postComments, postId, open, close, }) 
             
         }
     });
+    const addHandle = () => {
+        socket.emit('add-item', {collectionId: id, ...formData, userId})
+    }
 
     const opened = open || false;
     const body = (
         <Fade in={opened}>
             <div style={modalStyle} className={classes.paper}>
                 {/* kostiiiiiiliiiii */}
-                <TextField onChange={changeData} name='name' placeholder='Name' variant='outlined'></TextField>
-                <TextField onChange={changeData} name='tags' multiline rows={3} placeholder='Tags' variant='outlined'></TextField>
-                <Button onClick={addItem} variant='outlined'>Add</Button>
+                <TextField onChange={changeData} fullwidth name='name' placeholder='Name' variant='outlined'></TextField>
+                <TextField onChange={changeData} fullwidth name='tags' multiline rows={3} placeholder='Tags' variant='outlined'></TextField>
+                <Button onClick={addHandle} fullwidth variant='outlined'>Add</Button>
 
             </div>
         </Fade>

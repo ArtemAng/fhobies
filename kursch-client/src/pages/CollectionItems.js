@@ -18,10 +18,9 @@ const CollectionItems = () => {
     const { request } = useHttp();
     const classes = useStyles();
 
-    useEffect(async () => {
-        const data = await request('/api/comments', 'GET');
-        setComments(data.comments);
-    }, [request]);
+    useEffect(() =>{
+        //get comments
+    })
 
     return (
         <Grid container align="center" maxWidth="md" justify="center" spacing={1}>
@@ -29,7 +28,7 @@ const CollectionItems = () => {
             items.filter((item) => item.collectionId === clickedItem).length?
             items.filter((item) => item.collectionId === clickedItem).map((i, idx) => (
                 <Grid className={classes.card} item xs={12} sm={6} md={2} >
-                    < CollectionItem key={idx} likes={i.likes.length} id={i._id} key={idx} title={i.name} tags={i.tags} />
+                    < CollectionItem key={idx} likes={i.likes.length} id={i._id} key={idx} title={i.name} tags={i.tags}/>
                 </Grid>
             )): (
                 <Typography variant="h4" component='h4'> Collection do not have items</Typography>

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useContext } from 'react';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { useHttp } from '../hooks/http.hook';
 import { CategoriesContext } from '../context/Categories';
 import {useCategories} from '../hooks/catigories.hook';
+import {SocketContext} from '../context/SocketContext';
 
 const drawerWidth = 240;
 
@@ -85,6 +86,7 @@ export default function Dashboard({ open, openDrawerHandle }) {
   const [data, setData] = useState({ name: '', props: [] });
   const { request } = useHttp();
   const {categories, setCategories, removeCategory} = useCategories();
+  const {socket} = useContext(SocketContext);
   
   const requestAddHandle = useCallback(async () => {
     try {
@@ -113,10 +115,12 @@ export default function Dashboard({ open, openDrawerHandle }) {
     console.log(serverData);
   }
   
-  useEffect(async () => {
-    const serverData = await request('/api/categories/', 'GET');
-    setCategories([...serverData.categories]);
-  }, [request])
+  useEffect( () => {
+    socket.emit('get-categories');
+    socket.on('categories', (data) => {
+      setCategories(data);
+    })
+  }, [socket])
 
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 

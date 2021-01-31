@@ -16,6 +16,8 @@ import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import CommentsModal from '../CommentsModal';
 import { CommentsContext } from '../../context/CommentsContext';
 import { useHttp } from '../../hooks/http.hook';
+import { SocketContext } from '../../context/SocketContext';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -47,16 +49,24 @@ const CollectionItem = ({ title, tags, id, likes }) => {
     const { request } = useHttp();
     const { userId } = JSON.parse(localStorage.getItem('userData'));
     const { setCurrentItemId } = useContext(CommentsContext);
+    const { socket } = useContext(SocketContext);
     const handleOpen = () => {
         setOpen(!open);
     };
 
-    const likeHandle = useCallback(async () => {
+    const likeHandler = useCallback(async () => {
         try {
             await request('/api/collectionitems/like', 'POST', { userId, itemId: id })
-            
-        } catch (e) {}
-    }, [request])
+
+        } catch (e) { }
+    }, [request]);
+
+    const likeHandle = () => {
+        socket.emit('like-item', { userId, itemId: id } );
+    }
+    const delHandle = () => {
+        socket.emit('del-item', { userId, itemId: id } );
+    }
 
     return (
         <Card className={classes.root}>
@@ -67,8 +77,8 @@ const CollectionItem = ({ title, tags, id, likes }) => {
                   </Avatar>
                 }
                 action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon />
+                    <IconButton aria-label="settings" onClick={delHandle}>
+                        <HighlightOffIcon />
                     </IconButton>
                 }
                 title={title}
@@ -85,7 +95,7 @@ const CollectionItem = ({ title, tags, id, likes }) => {
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
-                <IconButton onClick={() => {console.log('like', id); likeHandle()}} aria-label="add to favorites">
+                <IconButton onClick={likeHandle} aria-label="add to favorites">
                     <FavoriteIcon /> {likes}
                 </IconButton>
                 <IconButton onClick={() => { handleOpen(); setCurrentItemId(id) }} aria-label="share">

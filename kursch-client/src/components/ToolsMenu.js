@@ -1,9 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState, useContext } from 'react';
 import MenuItem from '@material-ui/core/MenuItem';
 import Popover from '@material-ui/core/Popover';
 import { useHttp } from '../hooks/http.hook';
 import { makeStyles } from '@material-ui/styles';
 import AddItemModal from '../components/AddItemModal';
+import {SocketContext} from '../context/SocketContext';
 
 const useStyles = makeStyles((theme)=>({
     btn:{
@@ -20,16 +21,16 @@ const ToolsMenu = ({ isOpen, openTools, anchorEl, postIdx }) => {
 
     const menuId = 'primary-search-account-menu';
     const { request } = useHttp();
-
+    const {socket} = useContext(SocketContext);
     const [openAddItem, setOpenAddItem] = useState(false);
 
     const openAddItemHandle = ()=>{
         setOpenAddItem(!openAddItem);
     }
-    const deleteHandle = useCallback(async () => {
-        await request('/api/posts/deleteItem', 'POST', { postIdx })
-    });
-
+    
+    const deleteHandle = ()=>{
+        socket.emit('del-collection', {postIdx})
+    }
 
     return (
         <Popover

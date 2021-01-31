@@ -123,7 +123,7 @@ export default function PrimarySearchAppBar({ isAdmin, openDrawerHandle }) {
       <Link to='/profile'>
         <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       </Link>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}>My account1</MenuItem>
       <MenuItem onClick={() => { handleMenuClose(); logout(); }}>Logout</MenuItem>
     </Menu>
   );
@@ -139,42 +139,11 @@ export default function PrimarySearchAppBar({ isAdmin, openDrawerHandle }) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-
-      <Link to='/'>
-        <MenuItem>
-          <IconButton aria-label="show 11 new notifications" color="inherit">
-            <Badge color="secondary">
-              <HomeIcon />
-            </Badge>
-          </IconButton>
-          <p>Collections</p>
-        </MenuItem>
-      </Link>
       <Link to='/profile'>
-        <MenuItem onClick={handleMenuClose}>
-          <IconButton
-            aria-label="account of current user"
-            aria-controls="primary-search-account-menu"
-            aria-haspopup="true"
-            color="inherit"
-          >
-            <AccountCircle />
-          </IconButton>
-          <p>Profile</p>
-        </MenuItem>
+        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       </Link>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-          onClick={() => { handleMenuClose(); logout(); }}
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Logout</p>
-      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>My account1</MenuItem>
+      <MenuItem onClick={() => { handleMenuClose(); logout(); }}>Logout</MenuItem>
     </Menu>
   );
 

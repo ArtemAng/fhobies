@@ -46,18 +46,12 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const Post = ({ image, id, nickName, description, title, like, likes, postIdx }) => {
+const Post = ({ image, id, nickName, description, title}) => {
 
     const classes = useStyles();
-    // const [postComments, setPostComments] = useState([]);
     const [toolsOpen, setToolsOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const { setCurrentId } = useContext(ItemsContext)
-    // useEffect(() => {
-    //     const filteredComments = comments.map(i => i._id === id ? i : null).filter(i => i !== null);
-    //     setPostComments(filteredComments);
-    //     // console.log(comments.map(i=>i._id===id? i:null));
-    // }, [comments, setPostComments])
 
     const openTools = (e) => {
         setToolsOpen(!toolsOpen);

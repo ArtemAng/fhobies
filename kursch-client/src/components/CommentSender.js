@@ -6,6 +6,7 @@ import { TextField } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import { useHttp } from '../hooks/http.hook';
 import { CommentsContext } from '../context/CommentsContext';
+import {SocketContext} from '../context/SocketContext';
 
 const useStyles = makeStyles({
     root: {
@@ -25,11 +26,13 @@ const CommentSender = () => {
 
     const { request } = useHttp();
     const [text, setText] = useState('');
-    const { commetsClickedItem } = useContext(CommentsContext);
+    const { commetsClickedItem, addComment } = useContext(CommentsContext);
     const { token, userId } = JSON.parse(localStorage.getItem('userData'));
+    const {socket } = useContext(SocketContext);
     const sendComment = useCallback(async () => {
-        await request('/api/comments/addcomment', 'POST', { text, userId, itemId: commetsClickedItem }, { Authorization: `Bearer ${token}` });
-    })
+        // await request('/api/comments/addcomment', 'POST', , { Authorization: `Bearer ${token}` });
+        socket.emit('add-comment', { text, userId, itemId: commetsClickedItem });
+    });
 
     const classes = useStyles();
     return (
