@@ -23,10 +23,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const CategoriesDropDown = ({ handleChange }) => {
+const CategoriesDropDown = ({ value, handleChange }) => {
     const classes = useStyles();
     const [categories, setCategories] = useState([]);
-    const [value, setValue] = useState([]);
+    // const [value, setValue] = useState([]);
 
     const { socket } = useContext(SocketContext);
     useEffect(() => {
@@ -41,7 +41,7 @@ const CategoriesDropDown = ({ handleChange }) => {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={value}
-                onChange={(e)=>{handleChange(e); setValue(e.target.value)}}
+                onChange={(e)=>{handleChange(e);}}
             >
                 {categories.map((i, id) => <MenuItem key={id} value={i._id}>{i.name}</MenuItem>)}
             </Select>

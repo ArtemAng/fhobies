@@ -4,14 +4,15 @@ import {
     TextField,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { useContext } from 'react';
 import { ItemContext } from '../context/ItemContext';
 import { useHttp } from '../hooks/http.hook';
 import { useMessage } from '../hooks/message.hook';
 import { CollectionsContext } from '../context/CollectionContext';
 import { SocketContext } from '../context/SocketContext';
 import CategoriesDropDown from './CategoriesDropDowm';
-import {useState} from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { CategoriesContext } from '../context/Categories';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -31,17 +32,42 @@ const useStyles = makeStyles((theme) => ({
 
 const AddPostForm = ({ image }) => {
     const classes = useStyles();
-    const { item, editItem } = useContext(ItemContext);
-    const { request, error, clearError } = useHttp();
+    const { item, editItem, addProps } = useContext(ItemContext);
+    const { request } = useHttp();
     const message = useMessage();
-    const { collections } = useContext(CollectionsContext);
     const { userId } = JSON.parse(localStorage.getItem('userData'));
     const { socket } = useContext(SocketContext);
     const [categoryId, setCategoryId] = useState('');
+    const [categoryProps, setCatProps] = useState([]);
+    const [checked, setChecked] = useState(true);
+
+    const handleChange = (event) => {
+        setChecked(event.target.checked);
+    };
 
     const titleChangeHandler = (e) => editItem(e.target);
     const descriptionChangeHandler = (e) => editItem(e.target);
-    const categoryIdChangeHandler = (e) => setCategoryId(e.target.value);
+    const categoryIdChangeHandler = (e) => {
+        setCategoryId(e.target.value);
+    }
+
+    const getComponent = (type, name, key) => {
+        switch (type) {
+            case 'date': return '';
+            case 'textField': return <TextField key={key} className={classes.inputs}  onChange={(e) => addProps(e.target.value, name )} color="secondary" name={name} placeholder={name} fullWidth variant='filled' />;
+            case 'multiline': return <TextField key={key} className={classes.inputs} onChange={(e) => addProps(e.target.value, name)} color="secondary" multiline name={name} placeholder={name} fullWidth variant='filled' />;
+            case 'checkBox': return <div key={key}> <Checkbox checked={item[name]} onChange={(e) => addProps(e.target.checked, name)} inputProps={{ 'aria-label': 'primary checkbox' }} />{name}</div>;
+        }
+    }
+
+    useEffect(() => {
+        socket.emit('get-category-by-id', categoryId);
+        socket.on('category-by-id', (data) => setCatProps(data));
+    }, [socket, categoryId]);
+    // useEffect(() => {
+    //     console.log(categoryProps);
+    // }, [categoryProps]);
+
 
     const submitHandler = async () => {
         try {
@@ -62,7 +88,7 @@ const AddPostForm = ({ image }) => {
                 onChange={titleChangeHandler}
                 name='title'
             />
-            <CategoriesDropDown  handleChange={categoryIdChangeHandler} />
+            <CategoriesDropDown value={categoryId} handleChange={categoryIdChangeHandler} />
             <TextField
                 label="Description"
                 fullWidth
@@ -74,14 +100,19 @@ const AddPostForm = ({ image }) => {
                 variant='filled'
                 onChange={descriptionChangeHandler}
             />
-            <Button
-                variant='contained'
-                color='secondary'
-                onClick={submitHandler}
-                className={classes.btn}
-            >
-                Add
+            {
+                categoryProps.map((i, idx) => getComponent(i.type, i.name, idx))
+            }
+            <div>
+                <Button
+                    variant='contained'
+                    color='secondary'
+                    onClick={submitHandler}
+                    className={classes.btn}
+                >
+                    Add
             </Button>
+            </div>
         </Paper>
     );
 }

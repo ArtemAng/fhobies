@@ -2,7 +2,7 @@ const express = require('express');
 const config = require('config');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const {cloudinary} = require('./cloud');
+const { cloudinary } = require('./cloud');
 //models
 const Collection = require('./models/Collection');
 const Item = require('./models/Item');
@@ -30,6 +30,18 @@ io.on('connection', socket => {
         socket.emit('collections', collections);
     });
 
+    socket.on('get-category-by-id', async (id) => {
+        if (!id) {
+            socket.emit('category-by-id',[]);
+
+        }
+        else {
+            const category = await Category.findOne({ _id: id });
+            socket.emit('category-by-id', category.props);
+        }
+
+    })
+
     socket.on('get-items', async () => {
         const items = await Item.find();
         socket.emit('items', items);
@@ -50,7 +62,7 @@ io.on('connection', socket => {
         const collections = await Collection.find();
         socket.broadcast.emit('collections', collections);
     });
-    
+
     socket.on('add-comment', async (data) => {
         const { itemId, userId, text } = data;
         const comment = await new Comment({ userId, text, itemId });
@@ -75,7 +87,7 @@ io.on('connection', socket => {
         socket.broadcast.emit('items', items);
         socket.emit('items', items);
     });
-    
+
     socket.on('like-item', async (data) => {
         const { userId, itemId } = data;
         const item = await Item.findById({ _id: itemId });

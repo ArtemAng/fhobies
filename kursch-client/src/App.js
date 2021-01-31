@@ -35,7 +35,7 @@ function App() {
   const { request } = useHttp();
   const { items, setItems, setCurrentId, clickedItem } = useItems();
   const { comments, commetsClickedItem, setCurrentItemId, setComments, addComment } = useComments();
-  const { categories, setCategories, addCategory } = useCategories();
+  const { categories, setCategories, addCategory, currentCategory, setCurrentCategory } = useCategories();
 
   const openDrawerHandle = () => {
     setOpenDrawer(!openDrawer);
@@ -51,9 +51,9 @@ function App() {
 
   return (
     <SocketContext.Provider value={{ socket }}>
-      <CategoriesContext.Provider value={{ categories, setCategories, addCategory }}>
+      <CategoriesContext.Provider value={{ categories, setCategories, addCategory, currentCategory, setCurrentCategory }}>
         <CommentsContext.Provider value={{ setCurrentItemId, comments, commetsClickedItem, setComments, addComment }}>
-          <ItemsContext.Provider value={{ items, setCurrentId, clickedItem }}>
+          <ItemsContext.Provider value={{ items, setCurrentId, clickedItem}}>
             <ThemeProvider theme={theme}>
               <AuthContext.Provider value={{ login, logout, userId, token, isAutentificated }}>
                 <Router>

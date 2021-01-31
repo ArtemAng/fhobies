@@ -4,4 +4,5 @@ export const CategoriesContext = createContext({
     categories: [],
     addCategory: ()=>{},
     setCategories: ()=>{},
+    currentCategory: null
 });

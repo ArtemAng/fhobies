@@ -10,16 +10,11 @@ router.post(
     async (req, res) => {
         try {
             const candidateItem = req.body;
-
-            // console.log(candidateItem.image);
             const uploadedResponse = await cloudinary.uploader.upload(
                 req.body.image,
                 { upload_preset: "ml_default" }
             );
-            // if (!collection)
-            // res.status(400).json({ message: 'This collection does not exist.' });
             const user = await User.findOne({ _id: candidateItem.userId });
-            // console.log(user);
             const newCollection = {
                 userName: user.name,
                 title: candidateItem.title,
@@ -27,6 +22,7 @@ router.post(
                 categoryId: candidateItem.categoryId,
                 image: uploadedResponse.public_id,
                 userId: candidateItem.userId,
+                customProps: {...candidateItem.props}
             }
             
             const collection = await new Collection({ ...newCollection });

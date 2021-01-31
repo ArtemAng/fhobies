@@ -29,7 +29,7 @@ const Posts = () => {
     })
     return (
         <CommentsContext.Provider value={{ comments, setComments }}>
-            {posts.map((i, id) => <Post image={i.image} id={i._id} postIdx={id} likes={i.likes} like={() => like(id)} key={id} nickName={i.userName} title={i.title} description={i.description}></Post>)}
+            {posts.map((i, id) => <Post props={i.customProps} image={i.image} id={i._id} postIdx={id} likes={i.likes} like={() => like(id)} key={id} nickName={i.userName} title={i.title} description={i.description}></Post>)}
         </CommentsContext.Provider>
 
     );

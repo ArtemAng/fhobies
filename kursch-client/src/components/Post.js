@@ -3,10 +3,12 @@ import {
     Card,
     CardActionArea,
     CardContent,
+    CardHeader,
     makeStyles,
     Typography,
     Avatar,
-    Button
+    IconButton,
+    Divider
 } from '@material-ui/core';
 import testImg from '../images/as.jpg';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -44,9 +46,12 @@ const useStyles = makeStyles(theme => ({
         // borderRadius: '50%',
         // width: 20
     },
+    bold: {
+        fontWeight: 'bold'
+    }
 }))
 
-const Post = ({ image, id, nickName, description, title}) => {
+const Post = ({ image, id, nickName, description, title, props }) => {
 
     const classes = useStyles();
     const [toolsOpen, setToolsOpen] = useState(false);
@@ -58,21 +63,28 @@ const Post = ({ image, id, nickName, description, title}) => {
         !toolsOpen ? setAnchorEl(e.currentTarget) : setAnchorEl(null);
     }
 
-
-
     return (
         <Card className={classes.root}>
-            <CardActionArea>
-                <CardContent className={classes.postHeader}>
-                    <Avatar
-                        className={classes.avatar}
-                        alt='userAvatar'
-                        src={testImg} />
-                    <Typography className={classes.nickName} gutterBottom variant="h6" component="h1">
-                        {nickName}
-                    </Typography>
-                </CardContent>
-            </CardActionArea>
+
+            <CardHeader
+                avatar={
+                    <IconButton>
+                        <Avatar
+                            className={classes.avatar}
+                            alt='userAvatar'
+                            src={testImg} />
+                    </IconButton>
+                }
+                action={
+                    <IconButton onClick={openTools} variant='outlined' color='inherit' className={classes.moreBtn}>
+                        <MoreVertIcon />
+                    </IconButton>
+                }
+                title={<Typography className={classes.nickName} gutterBottom variant="h6" component="h1">
+                    {nickName}
+                </Typography>}
+                className={classes.postHeader} />
+
 
             <CardActionArea onClick={() => setCurrentId(id)}>
                 <Link to='/collectionItems'>
@@ -94,11 +106,13 @@ const Post = ({ image, id, nickName, description, title}) => {
                 </Typography>
                 {description}
             </CardContent>
-            <CardContent className={classes.postHeader}>
-                <Button onClick={openTools} variant='outlined' color='inherit' className={classes.moreBtn}>
-                    <MoreVertIcon />
-                </Button>
+            <Divider />
+            <CardContent>
+                {
+                    Object.keys(props).map((i, id) => <Typography key={id}><span className={classes.bold}>{i}:</span> {props[i]}</Typography>)
+                }
             </CardContent>
+            <Divider />
             <ToolsMenu postIdx={id} anchorEl={anchorEl} openTools={() => openTools()} isOpen={toolsOpen} />
         </Card>
     );

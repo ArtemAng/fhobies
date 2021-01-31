@@ -8,6 +8,7 @@ const schema = new Schema({
     image: {type: String, required: true},
     categoryId: { type: Types.ObjectId, ref: 'Category', required: true },
     userId: { type: Types.ObjectId, ref: 'User', required: true },
+    customProps: { type: Object}
 });
 
 module.exports = model('Collection', schema);

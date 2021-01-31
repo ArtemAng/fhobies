@@ -26,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2, 4, 3),
         alignItems: 'center'
     },
+    input:{
+        marginBottom: 10
+    }
 }));
 
 export default function SimpleModal({ id, postComments, postId, open, close, }) {
@@ -54,9 +57,9 @@ export default function SimpleModal({ id, postComments, postId, open, close, }) 
         <Fade in={opened}>
             <div style={modalStyle} className={classes.paper}>
                 {/* kostiiiiiiliiiii */}
-                <TextField onChange={changeData} fullwidth name='name' placeholder='Name' variant='outlined'></TextField>
-                <TextField onChange={changeData} fullwidth name='tags' multiline rows={3} placeholder='Tags' variant='outlined'></TextField>
-                <Button onClick={addHandle} fullwidth variant='outlined'>Add</Button>
+                <TextField onChange={changeData} color='secondary' className={classes.input} fullWidth name='name' label='Name' variant='outlined'></TextField>
+                <TextField onChange={changeData} color='secondary' className={classes.input} fullWidth name='tags' multiline rows={3} label='Tags' variant='outlined'></TextField>
+                <Button onClick={addHandle} variant='contained' color='secondary' fullWidth >Add</Button>
 
             </div>
         </Fade>
